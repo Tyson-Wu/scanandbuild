@@ -2,6 +2,10 @@
   "name": "scanandbuild",
   "displayName": "ScanAndBuild",
   "description": "Scan and build directory structures with configuration",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tyson-Wu/scanandbuild.git"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.108.1"
