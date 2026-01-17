@@ -1,0 +1,10 @@
+{
+    "include": [
+        "src",
+        "assets"
+    ],
+    "exclude": [
+        "node_modules",
+        "Library"
+    ]
+}
