@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import { minimatch } from 'minimatch';
 
 /* =========================
  * 插件入口
@@ -68,9 +69,10 @@ function scanDirectory(
 ) {
     const relative = path.relative(baseRoot, currentPath) || '.';
 
-    if (isExcluded(relative, config.exclude)) {
-        return;
+    if (config.exclude && isExcluded(relative, config.exclude)) {
+        return output;
     }
+
 
     output.push(relative);
 
@@ -108,10 +110,14 @@ async function generateConfigFile() {
     }
 
     const defaultConfig = {
-        exclude: [
-            "node_modules",
-            ".git",
-            "Library"
+        "include": [
+            "Assets/**"
+        ],
+        "exclude": [
+            "Library/**",
+            "Assets/Plugins/**",
+            "Assets/**/Plugins/**",
+            "**/*.meta"
         ]
     };
 
@@ -230,10 +236,14 @@ function ensureConfig(root: string): any {
 
     if (!fs.existsSync(configFile)) {
         const defaultConfig = {
-            exclude: [
-                "node_modules",
-                ".git",
-                "Library"
+            "include": [
+                "Assets/**"
+            ],
+            "exclude": [
+                "Library/**",
+                "Assets/Plugins/**",
+                "Assets/**/Plugins/**",
+                "**/*.meta"
             ]
         };
         fs.writeFileSync(configFile, JSON.stringify(defaultConfig, null, 2));
@@ -254,9 +264,15 @@ function getTargetRoot(uri?: vscode.Uri): string | null {
     }
     return vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? null;
 }
+function normalize(p: string) {
+  return p.replace(/\\/g, '/');
+}
 
-function isExcluded(relativePath: string, excludes: string[] = []): boolean {
-    return excludes.some(ex => relativePath.startsWith(ex));
+function isExcluded(relativePath: string, excludes: string[]): boolean {
+  const p = normalize(relativePath);
+  return excludes.some(rule =>
+    minimatch(p, rule, { dot: true, nocase: true })
+  );
 }
 
 export function deactivate() {}
