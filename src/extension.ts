@@ -159,12 +159,6 @@ async function generateFromStructureFile(uri?: vscode.Uri) {
 # 以 / 或 \\ 结尾表示目录
 # 不带结尾表示文件
 
-GameLogic/
-GameLogic/UI/
-GameLogic/UI/MainUI.lua
-Framework/
-Framework/Net/
-Framework/Net/HttpClient.lua
 `;
 
         fs.writeFileSync(structureFile, template, 'utf8');
