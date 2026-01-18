@@ -16,10 +16,36 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "directoryStructure.exportFolders",
+          "when": "explorerResourceIsFolder",
+          "group": "directoryStructure@1"
+        },
+        {
+          "command": "directoryStructure.exportAll",
+          "when": "explorerResourceIsFolder",
+          "group": "directoryStructure@1"
+        }
+      ]
+    },
     "commands": [
       {
-        "command": "scanandbuild.helloWorld",
-        "title": "Hello World"
+        "command": "directoryStructure.exportFolders",
+        "title": "Directory Structure: Export Folders Only"
+      },
+      {
+        "command": "directoryStructure.exportAll",
+        "title": "Directory Structure: Export Folders And Files"
+      },
+      {
+        "command": "directoryStructure.generateConfig",
+        "title": "Directory Structure: Generate Config File"
+      },
+      {
+        "command": "directoryStructure.generateFromFile",
+        "title": "Directory Structure: Generate From Structure File"
       }
     ]
   },
